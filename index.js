@@ -1,14 +1,25 @@
 const express = require("express");
+const jwt = require("jsonwebtoken");
 const app = express();
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 const port = process.env.PORT || 5000;
 require("dotenv").config();
 const { MongoClient, ServerApiVersion } = require("mongodb");
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://restaurant-6febb.web.app",
+      "https://restaurant-6febb.firebaseapp.com",
+    ],
+    credentials: true,
+  })
+);
 
 // middleware
 app.use(cors());
 app.use(express.json());
-
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.63qrdth.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -27,11 +38,11 @@ async function run() {
 
     const menuCollection = client.db("restaurant").collection("menu");
     const reviewsCollection = client.db("restaurant").collection("reviews");
-   app.get('/menu', async (req, res) => {
+    app.get("/menu", async (req, res) => {
       const result = await menuCollection.find().toArray();
       res.send(result);
     });
-   app.get('/reviews', async (req, res) => {
+    app.get("/reviews", async (req, res) => {
       const result = await reviewsCollection.find().toArray();
       res.send(result);
     });
