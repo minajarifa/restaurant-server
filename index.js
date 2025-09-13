@@ -47,10 +47,6 @@ async function run() {
       const result = await reviewsCollection.find().toArray();
       res.send(result);
     });
-    // app.get("/reviews", async (req, res) => {
-    //   const result = await reviewsCollection.find().toArray();
-    //   res.send(result);
-    // });
     await client.db("admin").command({ ping: 1 });
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
