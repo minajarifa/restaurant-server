@@ -2,19 +2,19 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const app = express();
 const cors = require("cors");
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
 const port = process.env.PORT || 5000;
 require("dotenv").config();
 const { MongoClient, ServerApiVersion } = require("mongodb");
 app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://restaurant-6febb.web.app",
-      "https://restaurant-6febb.firebaseapp.com",
-    ],
-    credentials: true,
-  })
+  // cors({
+  //   origin: [
+  //     "http://localhost:5173",
+  //     "https://restaurant-6febb.web.app",
+  //     "https://restaurant-6febb.firebaseapp.com",
+  //   ],
+  //   credentials: true,
+  // })
 );
 
 // middleware
