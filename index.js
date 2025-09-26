@@ -5,7 +5,7 @@ const cors = require("cors");
 // const cookieParser = require("cookie-parser");
 const port = process.env.PORT || 5000;
 require("dotenv").config();
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 app.use(
   cors({
     origin: [
@@ -38,8 +38,16 @@ async function run() {
     // await client.connect();
 
     const menuCollection = client.db("restaurant").collection("menu");
+    const userCollection = client.db("restaurant").collection("users");
     const reviewsCollection = client.db("restaurant").collection("reviews");
     const cartCollection = client.db("restaurant").collection("carts");
+
+    // userCollection
+    app.post("/users", async (req, res) => {
+      const user = req.body;
+      const result = await userCollection.insertOne(user);
+      res.send(result);
+    });
 
     // menuCollection
     app.get("/menu", async (req, res) => {
@@ -52,17 +60,22 @@ async function run() {
       res.send(result);
     });
     // cartCollection
-   
 
     app.get("/carts", async (req, res) => {
       const email = req.query.email;
-      const query = {email:email};
+      const query = { email: email };
       const result = await cartCollection.find(query).toArray();
       res.send(result);
     });
     app.post("/carts", async (req, res) => {
       const cartItem = req.body;
       const result = await cartCollection.insertOne(cartItem);
+      res.send(result);
+    });
+    app.delete("/carts/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await cartCollection.deleteOne(query);
       res.send(result);
     });
 
